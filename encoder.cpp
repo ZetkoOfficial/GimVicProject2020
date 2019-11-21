@@ -66,29 +66,6 @@ void writeToFile(vector<vector<bool>> enc, string fileName) {
     fs.close();
 }
 
-#ifdef TESTING
-#include "bitmap_image.hpp"
-void test(vector<vector<bool>> enc, BMPImage img, int steps){
-    vector<Vector2> vectors;
-    for(int i = 0; i < img.width() / 2; i++){
-        vectors.push_back(Vector2(0, i + 1));
-    }
-
-    bitmap_image newImg (img.width(), img.width());
-    Matrix2x2 rotMatrix = createRotationMatrix(steps);
-    for(int i = 0; i < steps; i++){
-        for(int j = 0; j < vectors.size(); j++){
-            Vector2 pixel = getPixelCoord(vectors[j], img.width(), img.width() / 2);
-            newImg.set_pixel(round(pixel[0]), round(pixel[1]), 255 * enc[i][j], 255 * enc[i][j], 255 * enc[i][j]);
-
-            vectors[j] = rotMatrix * vectors[j];
-        }
-    }
-
-    newImg.save_image("test.bmp");
-}
-#endif
-
 int main(int argc, char* argv[] ) {
 
     if(argc < 4){
@@ -106,10 +83,6 @@ int main(int argc, char* argv[] ) {
     std::cout << "Encoding: "; std::cout.flush();
     vector<vector<bool>> enc = encodeImg(img, img.width(), steps);
     std::cout << "\n";
-
-    #ifdef TESTING 
-    test(enc, img, steps); 
-    #endif
 
     std::cout << "Writing:  "; std::cout.flush();
     writeToFile(enc, targetFile);
