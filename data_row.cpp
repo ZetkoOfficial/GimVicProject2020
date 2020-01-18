@@ -3,14 +3,12 @@
 */
 
 #include <iostream>
-#include <vector>
-#include <string>
 
 using namespace std;
 
 struct DataRow {
     private:
-    u_int16_t data = 0;
+    uint16_t data = 0;
     
     void initData(bool values[], int n){
         for(int i = 0; i < n; i++) data |= (values[i] << i);
@@ -25,9 +23,10 @@ struct DataRow {
         bool values[] = {i0, i1, i2, i3, i4, i5, i6, i7, i8, i9};
         initData(values, 10);
     }
+
     DataRow() = default;
 
-    bool getEntry(int index) {
+    bool operator [] (int index){
         return data >> index & 1;
     }
 };
@@ -36,7 +35,7 @@ int main() {
     DataRow row = {0,1,0,0,1,1,0,0,0,1};
 
     for(int i = 0; i < 10; i++){
-        cout << row.getEntry(i);
+        cout << row[i];
     }
     cout << endl;
     cout << "Size of DataRow: " << sizeof(row) << " bytes\n";
